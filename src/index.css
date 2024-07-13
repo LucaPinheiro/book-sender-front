@@ -1,3 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.backgroundLogo {
+    clip-path: polygon(0 0, 100% 0, 100% 60%, 65% 100%, 0 100%);
+}
+
+.light-effect-button {
+    position: relative;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: color 0.4s;
+}
+
+.light-effect-button::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: -200%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(45deg);
+    transition: transform 0.8s, top 0.8s, left 0.8s;
+    z-index: 1;
+}
+
+.light-effect-button span {
+    position: relative;
+    z-index: 2;
+}
+
+.light-effect-button:hover::before {
+    top: 50%;
+    left: 50%;
+    transform: rotate(45deg) translate(-50%, -50%);
+}
+
+.light-effect-button:hover {
+    color: #fff;
+}
