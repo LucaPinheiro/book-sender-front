@@ -2,12 +2,12 @@ import LogoSantander from "../../../public/logoSantander.png";
 
 export function Header() {
     return (
-        <header className="p-8">
-        <nav className="flex gap-8">
+      <header className="p-8">
+        <nav className="flex gap-8 max-sm:flex-col">
           <div className="w-full bg-gray-400 flex items-center p-8">
             <h1 className="text-white font-bold text-6xl max-md:text-4xl">Book Sender</h1>
           </div>
-          <div className="w-96 h-32 p-4 bg-gray-400 backgroundLogo">
+          <div className="w-96 h-32 p-4 bg-gray-400 backgroundLogo max-sm:w-full">
             <img className="ml-4 h-full" src={LogoSantander} alt="logo do santander" />
           </div>
         </nav>
