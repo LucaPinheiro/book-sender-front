@@ -36,9 +36,10 @@ export function App() {
     <>
       <Header />
 
-      <main className="flex justify-center items-start px-8 gap-8 max-xl:flex-col-reverse">
+      <main className="flex justify-center items-start px-8 gap-8 max-xl:flex-col-reverse mb-4">
+        {/* SECTION 1 */}
         <section className="w-full">
-          <div className="flex w-full items-center justify-evenly">
+          <div className="flex flex-wrap w-full items-center justify-evenly">
             <RadioContainer 
               label="Market Share"
               value="MarketShare"
@@ -61,9 +62,79 @@ export function App() {
             />
           </div>
 
-          <textarea className="border-2 w-full mt-12 p-2" value={`Prezados ${saudacao}!\nSegue o relatório de ${selectBook == '' ? '{ selecione um book }' : selectBook == 'Conversao' ? 'Conversão' : selectBook.split(/(?=[A-Z])/).map((string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')} com dados de até ${diaAnterior}`}/>
+          <textarea 
+            className="border-b-2 border-l-2 border-red-500 outline-none w-full mt-8 p-2" 
+            value={`Prezados ${saudacao}!\nSegue o relatório de ${selectBook == '' ? '{ selecione um book }' : selectBook == 'Conversao' ? 'Conversão' : selectBook.split(/(?=[A-Z])/).map((string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')} com dados de até ${diaAnterior}`}
+          />
+
+          <article>
+            <div className="my-4">
+              <label className="bg-red-500 p-2 text-white rounded-md cursor-pointer font-semibold duration-200 hover:bg-red-400" htmlFor="selecaoArquivos">Enviar arquivo</label>
+              <input className="hidden" id="selecaoArquivos" type="file" />
+            </div>
+            {/* LISTA DE ARQUIVOS */}
+            {[1].length === 0 ? "" : 
+              <div className="border-2 h-8 mb-4 px-4 overflow-x-hidden overflow-y-scroll">
+                <div className="flex flex-wrap gap-4">
+                  <label>marketShare.xlsx</label>
+                  <label>segurosAuto.xlsx</label>
+                  <label>conversao.xlsx</label>
+                </div>
+              </div>
+            }
+            {/* LISTA */}
+            <div className="border-2 h-72 overflow-x-hidden overflow-y-scroll">
+              <h2 className="font-bold text-lg text-center underline">Chefe Financeira</h2>
+              <div className="ml-4 flex flex-wrap gap-4">
+                <label>chefe1@gmail.com</label>
+                <label>chefe2@gmail.com</label>
+                <label>chefe3@gmail.com</label>
+              </div>
+              <h2 className="font-bold text-lg text-center underline">Diretor</h2>
+              <div className="ml-4 flex flex-wrap gap-4">
+                <label>diretor@gmail.com</label>
+              </div>
+              <h2 className="font-bold text-lg text-center underline">Head de Finanças</h2>
+              <div className="ml-4 flex flex-wrap gap-4">
+                <label>head1@gmail.com</label>
+                <label>head2@gmail.com</label>
+                <label>head3@gmail.com</label>
+                <label>head4@gmail.com</label>
+                <label>head5@gmail.com</label>
+                <label>head6@gmail.com</label>
+              </div>
+              <h2 className="font-bold text-lg text-center underline">Gestor</h2>
+              <div className="ml-4 flex flex-wrap gap-4">
+                <label>gestor1@gmail.com</label>
+                <label>gestor2@gmail.com</label>
+              </div>
+              <h2 className="font-bold text-lg text-center underline">Time</h2>
+              <div className="ml-4 flex flex-wrap gap-4">
+                <label>time1@gmail.com</label>
+                <label>time2@gmail.com</label>
+                <label>time3@gmail.com</label>
+                <label>time4@gmail.com</label>
+                <label>time5@gmail.com</label>
+                <label>time6@gmail.com</label>
+                <label>time7@gmail.com</label>
+                <label>time8@gmail.com</label>
+                <label>time9@gmail.com</label>
+                <label>time10@gmail.com</label>
+                <label>time11@gmail.com</label>
+                <label>time12@gmail.com</label>
+                <label>time13@gmail.com</label>
+                <label>time14@gmail.com</label>
+                <label>time15@gmail.com</label>
+              </div>
+            </div>
+          </article>
+
+          <div className="flex justify-center items-center mt-8">
+            <button className="light-effect-button">Enviar Books</button>
+          </div>
         </section>
         
+        {/* SECTION 2 */}
         <section className="w-96 flex flex-col gap-8 max-xl:w-full">
           {/* ADICIONAR EMAIL E BUSCAR EMAIL */}
           <main className="max-xl:flex max-md:flex-col max-md:gap-4">
@@ -97,7 +168,7 @@ export function App() {
               <h3 className="text-center text-2xl font-semibold mb-6">Busca Email</h3>
 
               <div className="flex flex-col gap-4">
-                <input className="w-full border-b-2 border-l-2 border-black rounded-bl-md pl-1 outline-none duration-[350ms] focus:border-red-500" type="email" placeholder="Informe o Email..." />
+                <input className="w-full border-b-2 border-l-2 border-black rounded-bl-md pl-1 outline-none duration-[350ms] focus:border-red-500" type="text" placeholder="Informe o Email, Cargo ou Time..." />
                 <div className="flex items-center justify-around">
                   
                   <div className="flex items-center gap-1">
@@ -125,7 +196,7 @@ export function App() {
             {[1].length === 0 ? ""
             :
           <article className="border-l-2 border-red-500 p-2 pb-4 max-xl:w-full">
-            <div className="w-full h-32 border-2 p-2 overflow-x-hidden overflow-y-scroll box-border">
+            <div className="w-full h-32 border-2 rounded-lg p-2 overflow-x-hidden overflow-y-scroll box-border">
               {/* card */}
               <div className="flex border rounded-l-lg border-red-500 h-12 justify-start mb-4">
                 <div className="rounded-l-lg w-5 bg-red-500"/>
@@ -152,10 +223,6 @@ export function App() {
           }
         </section>
       </main>
-      
-      {/* <h1 className="text-6xl font-bold text-center underline text-red-600">
-        LUCA GAYYYY!
-      </h1> */}
     </>
   )
 }
