@@ -47,4 +47,18 @@ export class EmailRepository {
             throw error.response;
         }
     }
+
+    async deleteEmail(email: string){
+        try {
+            const token = await localStorage.getItem('accessToken');
+            const response = await http.delete(`/delete-email/${email}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response;
+        } catch (error: any) {
+            throw error.response;
+        }
+    }
 }
