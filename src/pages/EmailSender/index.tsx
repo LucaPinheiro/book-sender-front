@@ -1,19 +1,27 @@
-import { format, subDays } from "date-fns";
+import { format, set, subDays } from "date-fns";
 import { Header } from "../../components/header";
 import { RadioContainer } from "../../components/RadioContainer";
 import { useEffect, useState } from "react";
 import { UserRepository } from "../../api/repositories/user_repository";
 import { EmailRepository } from "../../api/repositories/email_repository";
+import { CircleNotch } from "@phosphor-icons/react";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export function EmailSender() {
     const [arquivo, setArquivo] = useState<FileList | null>(null);
     const [selectBook, setSelectBook] = useState('');
     const [saudacao, setSaudacao] = useState('');
     const [diaAnterior, setDiaAnterior] = useState('');
+    const [loadingCreateEmail, setLoadingCreateEmail] = useState(false);
     
     const [nome, setNome] = useState('');
     const [teamList, setTeamList] = useState<string[]>([]);
     const [teamAll, setTeamAll] = useState<string[]>([]);
+
+    const [newEmail, setNewEmail] = useState('');
+    const [newTeam, setNewTeam] = useState('');
+    const [newRole, setNewRole] = useState('');
 
     const userRepo = new UserRepository();
     const emailRepo = new EmailRepository();
@@ -32,7 +40,62 @@ export function EmailSender() {
       } else {
         setTeamList(response.data)
       }
-      // console.log(response.data)
+    }
+
+    async function createEmail() {
+      try {
+        setLoadingCreateEmail(true)
+        const response = await emailRepo.createEmail(newEmail, newTeam, newRole)
+        if(response.status === 201) {
+          toast.success(response.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          })
+        } else {
+          toast.error(response.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          })
+        }
+      }catch(error: any) {
+        if(error.status === 409) {
+          toast.error('Email já cadastrado', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          })
+        } else {
+          toast.error('Erro ao adicionar email', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          })
+        }
+      }
+      setTimeout(() => {
+        setNewEmail('')
+        setNewTeam('')
+        setNewRole('')
+        setLoadingCreateEmail(false)
+      }, 2000);
     }
     
     function EnviarBook() {
@@ -93,6 +156,7 @@ export function EmailSender() {
     <>
       <Header nome={nome} />
 
+      <ToastContainer position="top-center" autoClose={2000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
       <main className="flex justify-center items-start px-8 gap-8 max-xl:flex-col-reverse mb-4">
         {/* SECTION 1 */}
         <section className="w-full">
@@ -120,7 +184,7 @@ export function EmailSender() {
           </div>
 
           <textarea 
-            className="border-b-2 border-l-2 border-red-500 outline-none w-full mt-8 p-2" 
+            className="resize-none border-b-2 border-l-2 border-red-500 outline-none w-full mt-8 p-2" 
             readOnly
             value={`Prezados ${saudacao}!\nSegue o relatório de ${selectBook == '' ? '{ selecione um book }' : selectBook == 'Conversao' ? 'Conversão' : selectBook.split(/(?=[A-Z])/).map((string: string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')} com dados de até ${diaAnterior}`}
           />
@@ -129,7 +193,7 @@ export function EmailSender() {
             <div className="my-4">
               <label className="bg-red-500 p-2 text-white rounded-md cursor-pointer font-semibold duration-200 hover:bg-red-400" htmlFor="selecaoArquivos">Enviar arquivo</label>
               <label className="ml-4">{arquivo ? arquivo[0].name : 'Nenhum Arquivo'}</label>
-              <input onChange={(e) => setArquivo(e.target.files)} className="hidden" id="selecaoArquivos" type="file" accept="application/pdf" />
+              <input onChange={(e) => {e.target.files?.length === 0 ? setArquivo(null) : setArquivo(e.target.files)}} className="hidden" id="selecaoArquivos" type="file" accept="application/pdf" />
             </div>
 
             {/* LISTA */}
@@ -140,6 +204,7 @@ export function EmailSender() {
                   data.role === 'FINANCAS' && <label key={index}>{data.email}</label>
                 ))}
               </div>
+
               <h2 className="font-bold text-lg text-center underline">Diretor</h2>
               <div className="ml-4 flex flex-wrap gap-4">
                 {teamAll && teamAll.map((data: any, index) => (
@@ -183,25 +248,33 @@ export function EmailSender() {
               <h3 className="text-center text-2xl font-semibold mb-6">Adicionar Email</h3>
               
               <div className="flex flex-col gap-4">
-                <input className="w-full border-b-2 border-l-2 border-black rounded-bl-md pl-1 outline-none duration-[350ms] focus:border-red-500" type="email" placeholder="Informe o Email..." />
+                <input onChange={(e)=>setNewEmail(e.target.value)} className="w-full border-b-2 border-l-2 border-black rounded-bl-md pl-1 outline-none duration-[350ms] focus:border-red-500" type="email" placeholder="Informe o Email..." />
                 
-                <select className="p-1 rounded-md border-2 border-black duration-300 hover:border-red-500 focus:border-red-500">
+                <select onChange={(e)=>setNewTeam(e.target.value)} className="p-1 rounded-md border-2 border-black duration-300 hover:border-red-500 focus:border-red-500">
                   <option value="">Selecione um book</option>
-                  <option value="marketShare">Market Share</option>
-                  <option value="segurosAuto">Seguros Auto</option>
-                  <option value="conversao">Conversão</option>
+                  <option value="MARKET-SHARE">Market Share</option>
+                  <option value="SEGUROS-AUTO">Seguros Auto</option>
+                  <option value="CONVERSAO">Conversão</option>
                 </select>
 
-                <select className="p-1 rounded-md border-2 border-black duration-300 hover:border-red-500 focus:border-red-500">
+                <select onChange={(e)=>setNewRole(e.target.value)} className="p-1 rounded-md border-2 border-black duration-300 hover:border-red-500 focus:border-red-500">
                   <option value="">Selecione um cargo</option>
-                  <option value="chefeFinancas">Chefe Financeira</option>
-                  <option value="diretor">Diretor</option>
-                  <option value="headFinancas">Head de Finanças</option>
-                  <option value="gestor">Gestor</option>
-                  <option value="time">Time</option>
+                  <option value="FINANCAS">Chefe Financeira</option>
+                  <option value="DIRETOR">Diretor</option>
+                  <option value="HEAD">Head de Finanças</option>
+                  <option value="GESTOR">Gestor</option>
+                  <option value="TIME">Time</option>
                 </select>
 
-                <button className="light-effect-button">Adicionar</button>
+                <button type="button" className="light-effect-button" onClick={()=>createEmail()}>
+                  {loadingCreateEmail ? 
+                  <div className='flex justify-center'>
+                    <CircleNotch className='animate-spin' size={24} />
+                  </div>
+                  :  
+                  <h1>Adicionar</h1>
+                  }
+                </button>
               </div>
             </article>
 
