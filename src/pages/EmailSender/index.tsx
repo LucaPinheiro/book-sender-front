@@ -48,7 +48,7 @@ export function EmailSender() {
     checkToken();
 
     userRepo.getUser().then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       setNome(`${response.data.name.split(' ')[0]} ${response.data.name.split(' ')[1] != undefined ? response.data.name.split(' ')[1] : ''}`);
     })
   }, [])
