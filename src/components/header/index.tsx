@@ -1,8 +1,8 @@
 import LogoSantander from "../../../public/logoSantander.png";
 
 export function Header() {
-  function Logout() {
-    alert('Logout efetuado com sucesso');
+  async function Logout() {
+    await localStorage.removeItem('accessToken');
     window.location.href = '/';
   }
   return (
