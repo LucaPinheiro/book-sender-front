@@ -109,6 +109,44 @@ export function EmailSender() {
         setLoadingEmailSearch(false)
       }, 1000);
     }
+
+    async function deleteEmail(email: string) {
+      try {
+        const response = await emailRepo.deleteEmail(email)
+        if(response.status === 200) {
+          toast.success(response.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          })
+          allEmails()
+        } else {
+          toast.error(response.data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          })
+        }
+      }catch(error: any) {
+        toast.error('Erro ao deletar email', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        })
+      }
+    }
     
     function EnviarBook() {
         console.log(arquivo)
@@ -310,7 +348,7 @@ export function EmailSender() {
                       <div className="rounded-l-lg w-5 bg-red-500"/>
                       <div className="flex items-center justify-between w-full mx-4">
                         <h1>{data.email}</h1>
-                        <button type="button">
+                        <button type="button" onClick={()=>deleteEmail(data.email)}>
                           <Trash />
                         </button>
                       </div>
