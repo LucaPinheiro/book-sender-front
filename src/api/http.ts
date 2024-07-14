@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const http = axios.create({
-    baseURL: 'http://localhost:3030/api'
+    baseURL: 'https://gmerola.com.br/booksender/api'
 })
