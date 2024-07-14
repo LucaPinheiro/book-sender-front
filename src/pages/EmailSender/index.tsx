@@ -3,15 +3,20 @@ import { Header } from "../../components/header";
 import { RadioContainer } from "../../components/RadioContainer";
 import { useEffect, useState } from "react";
 import { UserRepository } from "../../api/repositories/user_repository";
+import { EmailRepository } from "../../api/repositories/email_repository";
 
 export function EmailSender() {
     const [arquivo, setArquivo] = useState<FileList | null>(null);
     const [selectBook, setSelectBook] = useState('');
     const [saudacao, setSaudacao] = useState('');
     const [diaAnterior, setDiaAnterior] = useState('');
+    
     const [nome, setNome] = useState('');
+    const [teamList, setTeamList] = useState<string[]>([]);
+    const [teamAll, setTeamAll] = useState<string[]>([]);
 
     const userRepo = new UserRepository();
+    const emailRepo = new EmailRepository();
 
     function checkToken() {
         const token = localStorage.getItem('accessToken');
@@ -20,6 +25,16 @@ export function EmailSender() {
         }
     }
 
+    async function emailsByTeam(team:string) {
+      const response = await emailRepo.getEmailsByTeam(team)
+      if(team === 'TODOS') {
+        setTeamAll(response.data)
+      } else {
+        setTeamList(response.data)
+      }
+      // console.log(response.data)
+    }
+    
     function EnviarBook() {
         console.log(arquivo)
     }
@@ -53,6 +68,27 @@ export function EmailSender() {
     })
   }, [])
 
+  useEffect(() => {
+    if(selectBook !== '') {
+      switch(selectBook) {
+        case 'MarketShare':
+          emailsByTeam('TODOS')
+          emailsByTeam('MARKET-SHARE');
+          break;
+        case 'SegurosAuto':
+          emailsByTeam('TODOS')
+          emailsByTeam('SEGUROS-AUTO');
+          break;
+        case 'Conversao':
+          emailsByTeam('TODOS')
+          emailsByTeam('CONVERSAO');
+          break;
+        default:
+          break;
+      }
+    }
+  }, [selectBook])
+
   return (
     <>
       <Header nome={nome} />
@@ -85,6 +121,7 @@ export function EmailSender() {
 
           <textarea 
             className="border-b-2 border-l-2 border-red-500 outline-none w-full mt-8 p-2" 
+            readOnly
             value={`Prezados ${saudacao}!\nSegue o relatório de ${selectBook == '' ? '{ selecione um book }' : selectBook == 'Conversao' ? 'Conversão' : selectBook.split(/(?=[A-Z])/).map((string: string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')} com dados de até ${diaAnterior}`}
           />
 
@@ -99,45 +136,36 @@ export function EmailSender() {
             <div className="border-2 h-72 overflow-x-hidden overflow-y-scroll">
               <h2 className="font-bold text-lg text-center underline">Chefe Financeira</h2>
               <div className="ml-4 flex flex-wrap gap-4">
-                <label>chefe1@gmail.com</label>
-                <label>chefe2@gmail.com</label>
-                <label>chefe3@gmail.com</label>
+                {teamAll && teamAll.map((data: any, index) => (
+                  data.role === 'FINANCAS' && <label key={index}>{data.email}</label>
+                ))}
               </div>
               <h2 className="font-bold text-lg text-center underline">Diretor</h2>
               <div className="ml-4 flex flex-wrap gap-4">
-                <label>diretor@gmail.com</label>
+                {teamAll && teamAll.map((data: any, index) => (
+                  data.role === 'DIRETOR' && <label key={index}>{data.email}</label>
+                ))}
               </div>
+
               <h2 className="font-bold text-lg text-center underline">Head de Finanças</h2>
               <div className="ml-4 flex flex-wrap gap-4">
-                <label>head1@gmail.com</label>
-                <label>head2@gmail.com</label>
-                <label>head3@gmail.com</label>
-                <label>head4@gmail.com</label>
-                <label>head5@gmail.com</label>
-                <label>head6@gmail.com</label>
+                {teamAll && teamAll.map((data: any, index) => (
+                  data.role === 'HEAD' && <label key={index}>{data.email}</label>
+                ))}
               </div>
+              
               <h2 className="font-bold text-lg text-center underline">Gestor</h2>
               <div className="ml-4 flex flex-wrap gap-4">
-                <label>gestor1@gmail.com</label>
-                <label>gestor2@gmail.com</label>
+                {teamAll && teamAll.map((data: any, index) => (
+                  data.role === 'GESTOR' && <label key={index}>{data.email}</label>
+                ))}
               </div>
-              <h2 className="font-bold text-lg text-center underline">Time</h2>
+
+              {teamList.length === 0 ? '' :<h2 className="font-bold text-lg text-center underline">Emails do time</h2>}
               <div className="ml-4 flex flex-wrap gap-4">
-                <label>time1@gmail.com</label>
-                <label>time2@gmail.com</label>
-                <label>time3@gmail.com</label>
-                <label>time4@gmail.com</label>
-                <label>time5@gmail.com</label>
-                <label>time6@gmail.com</label>
-                <label>time7@gmail.com</label>
-                <label>time8@gmail.com</label>
-                <label>time9@gmail.com</label>
-                <label>time10@gmail.com</label>
-                <label>time11@gmail.com</label>
-                <label>time12@gmail.com</label>
-                <label>time13@gmail.com</label>
-                <label>time14@gmail.com</label>
-                <label>time15@gmail.com</label>
+                {teamList && teamList.map((email, index) => (
+                  <label key={index}>{email}</label>
+                ))}
               </div>
             </div>
           </article>
