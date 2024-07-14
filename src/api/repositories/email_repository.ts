@@ -61,4 +61,26 @@ export class EmailRepository {
             throw error.response;
         }
     }
+
+    async sendEmail(team: string, subject: string, text: string, pdfPath: FileList){
+        try {
+            const token = await localStorage.getItem('accessToken');
+            const formData = new FormData();
+            
+            formData.append('team', team.toUpperCase());
+            formData.append('subject', subject);
+            formData.append('text', text);
+            formData.append('pdf', pdfPath[0]);
+
+            const response = await http.post('/send-email', formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            return response;
+        } catch (error: any) {
+            throw error.response;
+        }
+    }
 }
