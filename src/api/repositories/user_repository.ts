@@ -13,4 +13,18 @@ export class UserRepository {
             throw error.response;
         }
     }
+    
+    async getUser() {
+        try {
+            const token = await localStorage.getItem('accessToken');
+            const response = await http.get('/user', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            return response;
+        } catch (error: any) {
+            throw error.response;
+        }
+    }
 }
