@@ -175,9 +175,7 @@ export function EmailSender() {
           return;
         }
         const text = `Prezados ${saudacao}!\nSegue o relatório de ${selectBook == '' ? '{ selecione um book }' : selectBook == 'Conversao' ? 'Conversão' : selectBook.split(/(?=[A-Z])/).map((string: string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')} com dados de até ${diaAnterior}`;
-        const response = await emailRepo.sendEmail(selectBook, `Relatório ${selectBook.split(/(?=[A-Z])/).map((string: string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')} - ${new Date()}`, text, arquivo )
-        
-        console.log(response)
+        await emailRepo.sendEmail(selectBook, `Relatório ${selectBook.split(/(?=[A-Z])/).map((string: string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')} - ${new Date()}`, text, arquivo )
 
         toast.success('Book enviado com sucesso', {
           position: "top-center",
