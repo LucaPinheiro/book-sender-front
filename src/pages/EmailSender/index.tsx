@@ -4,9 +4,21 @@ import { RadioContainer } from "../../components/RadioContainer";
 import { useEffect, useState } from "react";
 
 export function EmailSender() {
+    const [arquivo, setArquivo] = useState<FileList | null>(null);
     const [selectBook, setSelectBook] = useState('');
-  const [saudacao, setSaudacao] = useState('');
-  const [diaAnterior, setDiaAnterior] = useState('');
+    const [saudacao, setSaudacao] = useState('');
+    const [diaAnterior, setDiaAnterior] = useState('');
+
+    function checkToken() {
+        const token = localStorage.getItem('accessToken');
+        if(token === null) {
+            window.location.href = '/';
+        }
+    }
+
+    function EnviarBook() {
+        console.log(arquivo)
+    }
 
   useEffect(() => {
     const obterSaudacao = () => {
@@ -29,6 +41,7 @@ export function EmailSender() {
 
     obterDiaAnterior();
     obterSaudacao();
+    checkToken();
   }, [])
 
   return (
@@ -69,7 +82,7 @@ export function EmailSender() {
           <article>
             <div className="my-4">
               <label className="bg-red-500 p-2 text-white rounded-md cursor-pointer font-semibold duration-200 hover:bg-red-400" htmlFor="selecaoArquivos">Enviar arquivo</label>
-              <input className="hidden" id="selecaoArquivos" type="file" />
+              <input onChange={(e) => setArquivo(e.target.files)} className="hidden" id="selecaoArquivos" type="file" />
             </div>
             {/* LISTA DE ARQUIVOS */}
             {[1].length === 0 ? "" : 
@@ -129,7 +142,7 @@ export function EmailSender() {
           </article>
 
           <div className="flex justify-center items-center mt-8">
-            <button className="light-effect-button">Enviar Books</button>
+            <button onClick={()=>EnviarBook()} className="light-effect-button">Enviar Books</button>
           </div>
         </section>
         
