@@ -33,4 +33,18 @@ export class EmailRepository {
             throw error.response;
         }
     }
+
+    async getAllEmail(){
+        try {
+            const token = await localStorage.getItem('accessToken');
+            const response = await http.get(`/emails`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response;
+        } catch (error: any) {
+            throw error.response;
+        }
+    }
 }
