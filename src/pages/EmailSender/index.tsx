@@ -4,7 +4,7 @@ import { RadioContainer } from "../../components/RadioContainer";
 import { useEffect, useState } from "react";
 import { UserRepository } from "../../api/repositories/user_repository";
 import { EmailRepository } from "../../api/repositories/email_repository";
-import { CircleNotch } from "@phosphor-icons/react";
+import { CircleNotch, Trash } from "@phosphor-icons/react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,6 +14,7 @@ export function EmailSender() {
     const [saudacao, setSaudacao] = useState('');
     const [diaAnterior, setDiaAnterior] = useState('');
     const [loadingCreateEmail, setLoadingCreateEmail] = useState(false);
+    const [loadingEmailSearch, setLoadingEmailSearch] = useState(false);
     
     const [nome, setNome] = useState('');
     const [teamList, setTeamList] = useState<string[]>([]);
@@ -22,6 +23,8 @@ export function EmailSender() {
     const [newEmail, setNewEmail] = useState('');
     const [newTeam, setNewTeam] = useState('');
     const [newRole, setNewRole] = useState('');
+
+    const [allEmailsSearch, setAllEmailsSearch] = useState<string[]>([]);
 
     const userRepo = new UserRepository();
     const emailRepo = new EmailRepository();
@@ -96,6 +99,15 @@ export function EmailSender() {
         setNewRole('')
         setLoadingCreateEmail(false)
       }, 2000);
+    }
+
+    async function allEmails() {
+      setLoadingEmailSearch(true)
+      const response = await emailRepo.getAllEmail()
+      setAllEmailsSearch(response.data)
+      setTimeout(() => {
+        setLoadingEmailSearch(false)
+      }, 1000);
     }
     
     function EnviarBook() {
@@ -244,7 +256,7 @@ export function EmailSender() {
         <section className="w-96 flex flex-col gap-8 max-xl:w-full">
           {/* ADICIONAR EMAIL E BUSCAR EMAIL */}
           <main className="max-xl:flex max-md:flex-col max-md:gap-4">
-            <article className="border-l-2 border-red-500 p-2 pb-4 max-xl:w-1/2 max-md:w-full">
+            <article className="border-l-2 border-red-500 p-2 pb-4 mb-8 max-xl:w-1/2 max-md:w-full">
               <h3 className="text-center text-2xl font-semibold mb-6">Adicionar Email</h3>
               
               <div className="flex flex-col gap-4">
@@ -279,62 +291,37 @@ export function EmailSender() {
             </article>
 
             <article className="border-l-2 border-red-500 p-2 max-xl:w-1/2 max-md:w-full">
-              <h3 className="text-center text-2xl font-semibold mb-6">Busca Email</h3>
+              <h3 className="text-center text-2xl font-semibold mb-4">Busca todos os emails</h3>
 
               <div className="flex flex-col gap-4">
-                <input className="w-full border-b-2 border-l-2 border-black rounded-bl-md pl-1 outline-none duration-[350ms] focus:border-red-500" type="text" placeholder="Informe o Email, Cargo ou Time..." />
-                <div className="flex items-center justify-around">
-                  
-                  <div className="flex items-center gap-1">
-                    <input name="filter" type="radio" />
-                    <label>Todos</label>
+                <button type="button" className="light-effect-button" onClick={()=>allEmails()}>
+                  {loadingEmailSearch ? 
+                  <div className='flex justify-center'>
+                    <CircleNotch className='animate-spin' size={24} />
                   </div>
-                  
-                  <div className="flex items-center gap-1">
-                    <input name="filter" type="radio" />
-                    <label>Cargo</label>
-                  </div>
-
-                  <div className="flex items-center gap-1">
-                    <input name="filter" type="radio" />
-                    <label>Time</label>
-                  </div>
+                  :  
+                  <h1>Adicionar</h1>
+                  }
+                </button>
+                {/* LISTA DE BUSCA EMAIL */}
+                <div className="w-full h-32 border-2 rounded-lg p-2 overflow-x-hidden overflow-y-scroll box-border">
+                  {allEmailsSearch && allEmailsSearch.map((data: any, index) => (
+                    <div key={index} className="flex border rounded-l-lg border-red-500 h-12 justify-start mb-4">
+                      <div className="rounded-l-lg w-5 bg-red-500"/>
+                      <div className="flex items-center justify-between w-full mx-4">
+                        <h1>{data.email}</h1>
+                        <button type="button">
+                          <Trash />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                
-                <button className="light-effect-button">Buscar</button>
               </div>
             </article>
-          </main>
 
-          {/* LISTA DE BUSCA EMAIL */}
-            {[1].length === 0 ? ""
-            :
-          <article className="border-l-2 border-red-500 p-2 pb-4 max-xl:w-full">
-            <div className="w-full h-32 border-2 rounded-lg p-2 overflow-x-hidden overflow-y-scroll box-border">
-              {/* card */}
-              <div className="flex border rounded-l-lg border-red-500 h-12 justify-start mb-4">
-                <div className="rounded-l-lg w-5 bg-red-500"/>
-                <div className="flex items-center ml-4">
-                  <h1>luca@gmail.com</h1>
-                </div>
-              </div>
-              {/* card */}
-              <div className="flex border rounded-l-lg border-red-500 h-12 justify-start mb-4">
-                <div className="rounded-l-lg w-5 bg-red-500"/>
-                <div className="flex items-center ml-4">
-                  <h1>diretor@gmail.com</h1>
-                </div>
-              </div>
-              {/* card */}
-              <div className="flex border rounded-l-lg border-red-500 h-12 justify-start mb-4">
-                <div className="rounded-l-lg w-5 bg-red-500"/>
-                <div className="flex items-center ml-4">
-                  <h1>gerente@gmail.com</h1>
-                </div>
-              </div>
-            </div>
-          </article>
-          }
+          </main>
+        
         </section>
       </main>
     </>
