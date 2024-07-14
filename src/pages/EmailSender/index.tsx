@@ -329,7 +329,7 @@ export function EmailSender() {
             </article>
 
             <article className="border-l-2 border-red-500 p-2 max-xl:w-1/2 max-md:w-full">
-              <h3 className="text-center text-2xl font-semibold mb-4">Busca todos os emails</h3>
+              <h3 className="text-center text-2xl font-semibold mb-4">Todos os emails</h3>
 
               <div className="flex flex-col gap-4">
                 <button type="button" className="light-effect-button" onClick={()=>allEmails()}>
@@ -338,7 +338,7 @@ export function EmailSender() {
                     <CircleNotch className='animate-spin' size={24} />
                   </div>
                   :  
-                  <h1>Adicionar</h1>
+                  <h1>Buscar</h1>
                   }
                 </button>
                 {/* LISTA DE BUSCA EMAIL */}
