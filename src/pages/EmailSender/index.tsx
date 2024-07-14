@@ -82,18 +82,10 @@ export function EmailSender() {
           <article>
             <div className="my-4">
               <label className="bg-red-500 p-2 text-white rounded-md cursor-pointer font-semibold duration-200 hover:bg-red-400" htmlFor="selecaoArquivos">Enviar arquivo</label>
-              <input onChange={(e) => setArquivo(e.target.files)} className="hidden" id="selecaoArquivos" type="file" />
+              <label className="ml-4">{arquivo ? arquivo[0].name : 'Nenhum Arquivo'}</label>
+              <input onChange={(e) => setArquivo(e.target.files)} className="hidden" id="selecaoArquivos" type="file" accept="application/pdf" />
             </div>
-            {/* LISTA DE ARQUIVOS */}
-            {[1].length === 0 ? "" : 
-              <div className="border-2 h-8 mb-4 px-4 overflow-x-hidden overflow-y-scroll">
-                <div className="flex flex-wrap gap-4">
-                  <label>marketShare.xlsx</label>
-                  <label>segurosAuto.xlsx</label>
-                  <label>conversao.xlsx</label>
-                </div>
-              </div>
-            }
+
             {/* LISTA */}
             <div className="border-2 h-72 overflow-x-hidden overflow-y-scroll">
               <h2 className="font-bold text-lg text-center underline">Chefe Financeira</h2>
