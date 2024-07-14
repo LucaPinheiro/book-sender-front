@@ -1,6 +1,6 @@
 import LogoSantander from "../../../public/logoSantander.png";
 
-export function Header() {
+export function Header({nome} : {nome: string}) {
   async function Logout() {
     await localStorage.removeItem('accessToken');
     window.location.href = '/';
@@ -18,7 +18,7 @@ export function Header() {
       <div className="flex justify-end">
         <div className="flex items-center gap-4">
           <div className="p-4">
-            <h1 className="text-lg">Bom dia, <label className="text-red-500 font-semibold">Luca Pinheiro</label>!</h1>
+            <h1 className="text-lg">Bom dia, <label className="text-red-500 font-semibold">{nome}</label>!</h1>
           </div>
           <button onClick={()=>Logout()} type="button" className="bg-red-500 px-4 py-2 rounded-md font-bold text-white duration-200 hover:bg-red-400">Sair</button>
         </div>
