@@ -148,8 +148,58 @@ export function EmailSender() {
       }
     }
     
-    function EnviarBook() {
-        console.log(arquivo)
+    async function EnviarBook() {
+      try {
+        if(selectBook === '') {
+          toast.error('Selecione um book', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          })
+          return;
+        }
+        if(arquivo === null) {
+          toast.error('Selecione um arquivo', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          })
+          return;
+        }
+        const text = `Prezados ${saudacao}!\nSegue o relatório de ${selectBook == '' ? '{ selecione um book }' : selectBook == 'Conversao' ? 'Conversão' : selectBook.split(/(?=[A-Z])/).map((string: string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')} com dados de até ${diaAnterior}`;
+        const response = await emailRepo.sendEmail(selectBook, `Relatório ${selectBook.split(/(?=[A-Z])/).map((string: string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')} - ${new Date()}`, text, arquivo )
+        
+        console.log(response)
+
+        toast.success('Book enviado com sucesso', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        })
+      } catch (error:any) {
+        toast.error('Erro ao enviar book', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        })
+      }
+      console.log(arquivo)
     }
 
   useEffect(() => {
@@ -251,28 +301,28 @@ export function EmailSender() {
               <h2 className="font-bold text-lg text-center underline">Chefe Financeira</h2>
               <div className="ml-4 flex flex-wrap gap-4">
                 {teamAll && teamAll.map((data: any, index) => (
-                  data.role === 'FINANCAS' && <label key={index}>{data.email}</label>
+                  data.role === '1' && <label key={index}>{data.email}</label>
                 ))}
               </div>
 
               <h2 className="font-bold text-lg text-center underline">Diretor</h2>
               <div className="ml-4 flex flex-wrap gap-4">
                 {teamAll && teamAll.map((data: any, index) => (
-                  data.role === 'DIRETOR' && <label key={index}>{data.email}</label>
+                  data.role === '2' && <label key={index}>{data.email}</label>
                 ))}
               </div>
 
               <h2 className="font-bold text-lg text-center underline">Head de Finanças</h2>
               <div className="ml-4 flex flex-wrap gap-4">
                 {teamAll && teamAll.map((data: any, index) => (
-                  data.role === 'HEAD' && <label key={index}>{data.email}</label>
+                  data.role === '4' && <label key={index}>{data.email}</label>
                 ))}
               </div>
               
               <h2 className="font-bold text-lg text-center underline">Gestor</h2>
               <div className="ml-4 flex flex-wrap gap-4">
                 {teamAll && teamAll.map((data: any, index) => (
-                  data.role === 'GESTOR' && <label key={index}>{data.email}</label>
+                  data.role === '3' && <label key={index}>{data.email}</label>
                 ))}
               </div>
 
