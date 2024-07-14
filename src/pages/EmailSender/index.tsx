@@ -2,12 +2,16 @@ import { format, subDays } from "date-fns";
 import { Header } from "../../components/header";
 import { RadioContainer } from "../../components/RadioContainer";
 import { useEffect, useState } from "react";
+import { UserRepository } from "../../api/repositories/user_repository";
 
 export function EmailSender() {
     const [arquivo, setArquivo] = useState<FileList | null>(null);
     const [selectBook, setSelectBook] = useState('');
     const [saudacao, setSaudacao] = useState('');
     const [diaAnterior, setDiaAnterior] = useState('');
+    const [nome, setNome] = useState('');
+
+    const userRepo = new UserRepository();
 
     function checkToken() {
         const token = localStorage.getItem('accessToken');
@@ -42,11 +46,16 @@ export function EmailSender() {
     obterDiaAnterior();
     obterSaudacao();
     checkToken();
+
+    userRepo.getUser().then((response) => {
+      console.log(response.data);
+      setNome(`${response.data.name.split(' ')[0]} ${response.data.name.split(' ')[1] != undefined ? response.data.name.split(' ')[1] : ''}`);
+    })
   }, [])
 
   return (
     <>
-      <Header />
+      <Header nome={nome} />
 
       <main className="flex justify-center items-start px-8 gap-8 max-xl:flex-col-reverse mb-4">
         {/* SECTION 1 */}
