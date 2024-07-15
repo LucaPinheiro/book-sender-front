@@ -313,14 +313,14 @@ export function EmailSender() {
               <h2 className="font-bold text-lg text-center underline">Head de Finanças</h2>
               <div className="ml-4 flex flex-wrap gap-4 justify-center">
                 {teamAll && teamAll.map((data: any, index) => (
-                  data.role === '4' && <label key={index}>{data.email}</label>
+                  data.role === '3' && <label key={index}>{data.email}</label>
                 ))}
               </div>
               
               <h2 className="font-bold text-lg text-center underline justify-center">Gestor</h2>
               <div className="ml-4 flex flex-wrap gap-4">
                 {teamAll && teamAll.map((data: any, index) => (
-                  data.role === '3' && <label key={index}>{data.email}</label>
+                  data.role === '4' && <label key={index}>{data.email}</label>
                 ))}
               </div>
 
