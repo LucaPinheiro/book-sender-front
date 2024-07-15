@@ -174,7 +174,7 @@ export function EmailSender() {
           })
           return;
         }
-        const text = `Prezados ${saudacao}!\nSegue o relatório de ${selectBook == '' ? '{ selecione um book }' : selectBook == 'Conversao' ? 'Conversão' : selectBook.split(/(?=[A-Z])/).map((string: string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')} com dados de até ${diaAnterior}`;
+        const text = `Prezados ${saudacao}!\nSegue o relatório de ${selectBook == '' ? '{ selecione um book }' : selectBook == 'Conversao' ? 'Conversão' : selectBook.split(/(?=[A-Z])/).map((string: string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')}, com dados atualizador até ${diaAnterior}.`;
         await emailRepo.sendEmail(selectBook, `Relatório ${selectBook.split(/(?=[A-Z])/).map((string: string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')} - ${new Date()}`, text, arquivo )
 
         toast.success('Book enviado com sucesso', {
@@ -284,7 +284,7 @@ export function EmailSender() {
           <textarea 
             className="resize-none border-b-2 border-l-2 border-red-500 outline-none w-full mt-8 p-2" 
             readOnly
-            value={`Prezados ${saudacao}!\nSegue o relatório de ${selectBook == '' ? '{ selecione um book }' : selectBook == 'Conversao' ? 'Conversão' : selectBook.split(/(?=[A-Z])/).map((string: string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')} com dados de até ${diaAnterior}`}
+            value={`Prezados ${saudacao}!\nSegue o relatório de ${selectBook == '' ? '{ selecione um book }' : selectBook == 'Conversao' ? 'Conversão' : selectBook.split(/(?=[A-Z])/).map((string: string) => string.charAt(0).toUpperCase() + string.slice(1)).join(' ')}, com dados atualizados até ${diaAnterior}.`}
           />
 
           <article>
@@ -297,27 +297,27 @@ export function EmailSender() {
             {/* LISTA */}
             <div className="border-2 h-72 overflow-x-hidden overflow-y-scroll">
               <h2 className="font-bold text-lg text-center underline">Chefe Financeira</h2>
-              <div className="ml-4 flex flex-wrap gap-4">
+              <div className="ml-4 flex flex-wrap gap-4 justify-center">
                 {teamAll && teamAll.map((data: any, index) => (
                   data.role === '1' && <label key={index}>{data.email}</label>
                 ))}
               </div>
 
               <h2 className="font-bold text-lg text-center underline">Diretor</h2>
-              <div className="ml-4 flex flex-wrap gap-4">
+              <div className="ml-4 flex flex-wrap gap-4 justify-center">
                 {teamAll && teamAll.map((data: any, index) => (
                   data.role === '2' && <label key={index}>{data.email}</label>
                 ))}
               </div>
 
               <h2 className="font-bold text-lg text-center underline">Head de Finanças</h2>
-              <div className="ml-4 flex flex-wrap gap-4">
+              <div className="ml-4 flex flex-wrap gap-4 justify-center">
                 {teamAll && teamAll.map((data: any, index) => (
                   data.role === '4' && <label key={index}>{data.email}</label>
                 ))}
               </div>
               
-              <h2 className="font-bold text-lg text-center underline">Gestor</h2>
+              <h2 className="font-bold text-lg text-center underline justify-center">Gestor</h2>
               <div className="ml-4 flex flex-wrap gap-4">
                 {teamAll && teamAll.map((data: any, index) => (
                   data.role === '3' && <label key={index}>{data.email}</label>
