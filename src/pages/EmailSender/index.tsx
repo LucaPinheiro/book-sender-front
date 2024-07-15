@@ -357,11 +357,11 @@ export function EmailSender() {
 
                 <select onChange={(e)=>setNewRole(e.target.value)} className="p-1 rounded-md border-2 border-black duration-300 hover:border-red-500 focus:border-red-500">
                   <option value="">Selecione um cargo</option>
-                  <option value="FINANCAS">Chefe Financeira</option>
-                  <option value="DIRETOR">Diretor</option>
-                  <option value="HEAD">Head de Finanças</option>
-                  <option value="GESTOR">Gestor</option>
-                  <option value="TIME">Time</option>
+                  <option value="1">Chefe Financeira</option>
+                  <option value="2">Diretor</option>
+                  <option value="3">Head de Finanças</option>
+                  <option value="4">Gestor</option>
+                  <option value="5">Time</option>
                 </select>
 
                 <button type="button" className="light-effect-button" onClick={()=>createEmail()}>
