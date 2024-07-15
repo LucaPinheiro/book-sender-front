@@ -252,7 +252,7 @@ export function EmailSender() {
 
   return (
     <>
-      <Header nome={nome} />
+      <Header saudacao={saudacao} nome={nome} />
 
       <ToastContainer position="top-center" autoClose={2000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
       <main className="flex justify-center items-start px-8 gap-8 max-xl:flex-col-reverse mb-4">
@@ -324,7 +324,7 @@ export function EmailSender() {
                 ))}
               </div>
 
-              {teamList.length === 0 ? '' :<h2 className="font-bold text-lg text-center underline">Emails do time</h2>}
+              {teamList.length === 0 ? '' :<h2 className="font-bold text-lg text-center underline">Time</h2>}
               <div className="ml-4 flex flex-wrap gap-4">
                 {teamList && teamList.map((email, index) => (
                   <label key={index}>{email}</label>
@@ -343,10 +343,10 @@ export function EmailSender() {
           {/* ADICIONAR EMAIL E BUSCAR EMAIL */}
           <main className="max-xl:flex max-md:flex-col max-md:gap-4">
             <article className="border-l-2 border-red-500 p-2 pb-4 mb-8 max-xl:w-1/2 max-md:w-full">
-              <h3 className="text-center text-2xl font-semibold mb-6">Adicionar Email</h3>
+              <h3 className="text-center text-2xl font-semibold mb-6">Adicionar E-mail</h3>
               
               <div className="flex flex-col gap-4">
-                <input onChange={(e)=>setNewEmail(e.target.value)} className="w-full border-b-2 border-l-2 border-black rounded-bl-md pl-1 outline-none duration-[350ms] focus:border-red-500" type="email" placeholder="Informe o Email..." />
+                <input onChange={(e)=>setNewEmail(e.target.value)} className="w-full border-b-2 border-l-2 border-black rounded-bl-md pl-1 outline-none duration-[350ms] focus:border-red-500" type="email" placeholder="Informe o E-mail..." />
                 
                 <select onChange={(e)=>setNewTeam(e.target.value)} className="p-1 rounded-md border-2 border-black duration-300 hover:border-red-500 focus:border-red-500">
                   <option value="">Selecione um book</option>
@@ -377,7 +377,7 @@ export function EmailSender() {
             </article>
 
             <article className="border-l-2 border-red-500 p-2 max-xl:w-1/2 max-md:w-full">
-              <h3 className="text-center text-2xl font-semibold mb-4">Todos os emails</h3>
+              <h3 className="text-center text-2xl font-semibold mb-4">Todos os E-mails</h3>
 
               <div className="flex flex-col gap-4">
                 <button type="button" className="light-effect-button" onClick={()=>allEmails()}>
