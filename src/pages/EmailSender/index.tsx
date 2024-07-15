@@ -303,29 +303,29 @@ export function EmailSender() {
                 ))}
               </div>
 
-              <h2 className="font-bold text-lg text-center underline">Diretor</h2>
+              <h2 className="font-bold text-lg text-center underline mt-4">Diretor</h2>
               <div className="ml-4 flex flex-wrap gap-4 justify-center">
                 {teamAll && teamAll.map((data: any, index) => (
                   data.role === '2' && <label key={index}>{data.email}</label>
                 ))}
               </div>
 
-              <h2 className="font-bold text-lg text-center underline">Head de Finanças</h2>
+              <h2 className="font-bold text-lg text-center underline mt-4">Head de Finanças</h2>
               <div className="ml-4 flex flex-wrap gap-4 justify-center">
                 {teamAll && teamAll.map((data: any, index) => (
                   data.role === '3' && <label key={index}>{data.email}</label>
                 ))}
               </div>
               
-              <h2 className="font-bold text-lg text-center underline justify-center">Gestor</h2>
-              <div className="ml-4 flex flex-wrap gap-4">
+              <h2 className="font-bold text-lg text-center underline mt-4">Gestor</h2>
+              <div className="ml-4 flex flex-wrap gap-4 justify-center">
                 {teamAll && teamAll.map((data: any, index) => (
                   data.role === '4' && <label key={index}>{data.email}</label>
                 ))}
               </div>
 
-              {teamList.length === 0 ? '' :<h2 className="font-bold text-lg text-center underline">Time</h2>}
-              <div className="ml-4 flex flex-wrap gap-4">
+              {teamList.length === 0 ? '' :<h2 className="font-bold text-lg text-center underline mt-4">Time</h2>}
+              <div className="ml-4 flex flex-wrap gap-4 justify-center">
                 {teamList && teamList.map((email, index) => (
                   <label key={index}>{email}</label>
                 ))}
